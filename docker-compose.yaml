@@ -1,0 +1,33 @@
+name: simple-api
+
+volumes:
+  mongo:
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: simple-api-database
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+    environment:
+      - TZ=Asia/Tashkent
+
+  server:
+    image: node:20
+    container_name: simple-api-production
+    restart: always
+    depends_on:
+      - mongo
+    command: sh -c "npm install && npm start"
+    ports:
+      - 3030:3030
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      - TZ=Asia/Tashkent
+      - MONGO_URI=mongodb://mongo:27017/simple-api
+      - PORT=3030
