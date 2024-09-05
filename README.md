@@ -1,1 +1,1 @@
-Simple Node.js API
+Simple Node.js API with CRUD operations.
